@@ -1,0 +1,9 @@
+services:
+  php:
+    image: php:8.4-fpm
+    container_name: php_lab
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./app:/var/www/html
