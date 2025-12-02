@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Listen for Xdebug (Docker)",
+            "type": "php",
+            "request": "launch",
+            "port": 9003,
+            "pathMappings": {
+                // Ścieżka wewnątrz kontenera -> Ścieżka na Twoim komputerze
+                "/var/www/html": "${workspaceFolder}/app"
+            },
+            "hostname": "0.0.0.0", // Ważne: nasłuchuj na wszystkich interfejsach, nie tylko localhost
+            "ignore": [
+                "**/vendor/**/*.php"
+            ]
+        }
+    ]
+}

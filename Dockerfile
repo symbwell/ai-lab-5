@@ -2,6 +2,7 @@ FROM php:8.4-fpm
 
 ARG NODE_VERSION=24
 
+# Połączone apt-get update i install dla lepszej optymalizacji warstw
 RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     libonig-dev \
@@ -15,7 +16,15 @@ RUN apt-get update && apt-get install -y \
     libsqlite3-dev \
     pkg-config \
     gnupg \
+    wget \
+    tar \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
+
+RUN pecl channel-update pecl.php.net \
+    && (pecl list installed xdebug > /dev/null 2>&1 || pecl install xdebug) \
+    && docker-php-ext-enable xdebug \
+    && rm -rf /tmp/pear
 
 RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
     && apt-get install -y nodejs \
