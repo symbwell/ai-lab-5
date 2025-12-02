@@ -19,10 +19,11 @@ RUN apt-get update && apt-get install -y \
     wget \
     tar \
     build-essential \
+    autoconf \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pecl channel-update pecl.php.net \
-    && (pecl list installed xdebug > /dev/null 2>&1 || pecl install xdebug) \
+    && pecl install xdebug \
     && docker-php-ext-enable xdebug \
     && rm -rf /tmp/pear
 
