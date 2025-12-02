@@ -13,7 +13,9 @@ ob_start(); ?>
 
     <ul class="index-list">
         <?php foreach ($posts as $post): ?>
-            <li><h3><?= $post->getSubject() ?></h3>
+            <li>
+                <h3><?= $post->getSubject() ?></h3>
+                <p>Comments: <?= $post->getCommentsCount() ?></p>
                 <ul class="action-list">
                     <li><a href="<?= $router->generatePath('post-show', ['id' => $post->getId()]) ?>">Details</a></li>
                     <li><a href="<?= $router->generatePath('post-edit', ['id' => $post->getId()]) ?>">Edit</a></li>

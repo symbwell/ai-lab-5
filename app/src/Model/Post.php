@@ -136,4 +136,41 @@ class Post
         $this->setSubject(null);
         $this->setContent(null);
     }
+
+    public function getCommentsCount(): int
+    {
+        if (!$this->getId()) {
+            return 0;
+        }
+        
+        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
+        $sql = "SELECT COUNT(*) FROM comment WHERE post_id = :id";
+        $statement = $pdo->prepare($sql);
+        $statement->execute(['id' => $this->getId()]);
+
+        return (int) $statement->fetchColumn();
+    }
+
+    /**
+     * @return Comment[]
+     */
+    public function getComments(): array
+    {
+        if (!$this->getId()) {
+            return [];
+        }
+
+        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
+        $sql = "SELECT * FROM comment WHERE post_id = :id ORDER BY id DESC"; // Najnowsze na górze
+        $statement = $pdo->prepare($sql);
+        $statement->execute(['id' => $this->getId()]);
+
+        $comments = [];
+        $commentsArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($commentsArray as $commentArray) {
+            $comments[] = Comment::fromArray($commentArray);
+        }
+
+        return $comments;
+    }
 }
